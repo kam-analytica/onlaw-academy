@@ -1,0 +1,11 @@
+VIDEO DE BIENVENIDA · OnLaw Academy
+===================================
+Subir a esta carpeta (videos/) del repositorio, con estos nombres exactos (la landing los detecta sola):
+
+  bienvenida.mp4   video HORIZONTAL 16:9 (la sección está diseñada para ese formato)
+  bienvenida.jpg   portada: un fotograma bonito, 1280×720, ≤ 200 KB
+
+Formato: MP4 (H.264 + AAC), 1920×1080 o 1280×720, 30 fps, ≤ 25 MB (límite de subida por la web de GitHub: 25 MB por archivo).
+kam. Analytica convierte el original (.mov del iPhone) a este formato y genera la portada; basta con entregar el archivo original.
+Mientras el archivo no exista en el sitio, el marco muestra el símbolo de OnLaw y "Muy pronto".
+Textos de la sección (título, subtítulo y pie de foto): en index.html, dentro de <section id="bienvenida">.
