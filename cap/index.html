@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Página de inscripción para agremiados del Colegio de Abogados de Pichincha (convenio del 27-oct-2026).
      Misma política de seguridad que la portada, sin píxel de Meta: solo recursos propios. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; media-src 'self'; connect-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex, follow">
 <title>Inteligencia Artificial para los Abogados de Pichincha · On | Law Academy</title>
@@ -158,6 +158,7 @@ input:focus-visible{outline:3px solid rgba(194,44,113,.35);border-color:var(--ma
 .chk a{color:var(--magd);font-weight:700}
 .err{grid-column:1/-1;color:#B3261E;font-weight:700;font-size:14.5px;min-height:1px}
 form .btn{grid-column:1/-1;justify-self:start}
+form[hidden]{display:none} /* display:grid del formulario anulaba el atributo hidden tras enviar */
 .note{grid-column:1/-1;color:#5F6380;font-size:13.5px}
 .done{margin-top:30px;background:#fff;color:var(--ink);border-radius:24px;padding:30px}
 .done h3{font-size:26px;font-weight:800}
@@ -297,7 +298,7 @@ footer nav{display:flex;flex-wrap:wrap;gap:18px}
     <div class="k">Inscripción</div>
     <h2>Reserva tu cupo <span class="m">en tres pasos</span></h2>
     <div class="steps">
-      <div><b>01</b><p>Completa el formulario. Se abre WhatsApp con tu solicitud lista: solo tienes que enviarla.</p></div>
+      <div><b>01</b><p>Completa el formulario. Tu solicitud llega a hola@onlawacademy.com y recibes una confirmación por correo.</p></div>
       <div><b>02</b><p>Validamos tu condición de socio o afiliado activo con el Colegio.</p></div>
       <div><b>03</b><p>Te enviamos el enlace de pago (USD&nbsp;49&nbsp;+&nbsp;IVA) o el acceso a la MasterClass gratuita.</p></div>
     </div>
@@ -311,19 +312,15 @@ footer nav{display:flex;flex-wrap:wrap;gap:18px}
       <label class="f full">Nombre completo<input type="text" name="nombre" autocomplete="name" autocapitalize="words" spellcheck="false" maxlength="90" required placeholder="Nombre y apellido"></label>
       <label class="f">Cédula o número de matrícula<input type="text" name="cedula" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="20" required placeholder="Para validar tu afiliación"></label>
       <label class="f">Correo electrónico<input type="email" name="correo" autocomplete="email" spellcheck="false" maxlength="90" required placeholder="tu@correo.com"></label>
-      <label class="f full">WhatsApp<div class="tel"><span>+593</span><input type="tel" name="whatsapp" inputmode="numeric" autocomplete="tel-national" maxlength="14" required placeholder="99 999 9999"></div></label>
+      <label class="f full">Celular<div class="tel"><span>+593</span><input type="tel" name="celular" inputmode="numeric" autocomplete="tel-national" maxlength="14" required placeholder="99 999 9999"></div></label>
+      <label class="f full" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden" aria-hidden="true">Sitio web<input type="text" name="sitio" tabindex="-1" autocomplete="off"></label>
       <label class="chk"><input type="checkbox" name="socio" required><span>Declaro que soy socio o afiliado activo del Colegio de Abogados de Pichincha.</span></label>
       <label class="chk"><input type="checkbox" name="acepto" required><span>Acepto la <a href="/politica-de-proteccion-de-datos-personales.html" target="_blank" rel="noopener">política de protección de datos personales</a> y la <a href="/politica-de-uso.html" target="_blank" rel="noopener">política de uso</a> de On | Law Academy.</span></label>
       <p class="err" id="err" role="alert"></p>
-      <button class="btn" type="submit">Enviar mi inscripción por WhatsApp</button>
-      <p class="note">Tus datos solo se usan para validar tu afiliación con el Colegio y gestionar tu inscripción.</p>
+      <button class="btn" type="submit">Enviar mi inscripción</button>
+      <p class="note">Tus datos solo se usan para validar tu afiliación con el Colegio y gestionar tu inscripción. Te escribiremos desde hola@onlawacademy.com.</p>
     </form>
 
-    <div class="done" id="done" hidden tabindex="-1">
-      <h3>¡Ya casi está!</h3>
-      <p id="done-msg">Abrimos WhatsApp en una pestaña nueva con tu solicitud: solo tienes que enviarla. En cuanto validemos tu afiliación con el Colegio, te escribimos con los siguientes pasos.</p>
-      <p><a id="done-link" href="https://wa.me/593962825787" target="_blank" rel="noopener noreferrer">Si WhatsApp no se abrió, pulsa aquí.</a></p>
-    </div>
   </div>
 </section>
 
@@ -334,7 +331,8 @@ footer nav{display:flex;flex-wrap:wrap;gap:18px}
     <div class="faq">
       <details><summary>¿Quién puede acceder al precio de USD&nbsp;49&nbsp;+&nbsp;IVA?</summary><p>Los socios y afiliados activos del Colegio de Abogados de Pichincha. Validamos tu condición con el coordinador del Colegio antes de enviarte el enlace de pago. El precio para el público en general es de USD&nbsp;89.</p></details>
       <details><summary>¿Qué necesito para participar?</summary><p>Un computador con Google Chrome y una cuenta de Google. Para Claude para Abogados también necesitas una cuenta de Claude; recomendamos el plan de pago para practicar todo lo que se ve en clase, y ese plan no está incluido en la inscripción.</p></details>
-      <details><summary>¿Cómo me conecto a las clases?</summary><p>Las Sesiones son en vivo y en línea, de 18:00 a 20:00 (hora de Ecuador). Después de inscribirte recibes por correo y WhatsApp el enlace de cada Sesión y el acceso al área de miembros con los materiales.</p></details>
+      <details><summary>¿Cómo me conecto a las clases?</summary><p>Las Sesiones son en vivo y en línea, de 18:00 a 20:00 (hora de Ecuador). Después de inscribirte recibes por correo el enlace de cada Sesión y el acceso al área de miembros con los materiales.</p></details>
+      <details><summary>¿Cómo sé que mi inscripción llegó?</summary><p>Recibes una confirmación en tu correo desde hola@onlawacademy.com. Si no la ves en unos minutos, revisa la carpeta de spam o escríbenos a esa dirección.</p></details>
       <details><summary>¿Y si no puedo asistir a una Sesión?</summary><p>Cada Sesión queda grabada: las de Claude para Abogados y la de la MasterClass están disponibles durante 6 meses.</p></details>
       <details><summary>¿Cómo pago?</summary><p>En línea, con tarjeta de crédito o débito, o con PayPal, a través del enlace que te enviamos tras validar tu afiliación.</p></details>
       <details><summary>¿Recibo certificado?</summary><p>Sí. On | Law Academy emite los certificados con el aval y respaldo del Colegio de Abogados de Pichincha: de asistencia para la MasterClass y de aprobación para Claude para Abogados.</p></details>
@@ -352,30 +350,56 @@ footer nav{display:flex;flex-wrap:wrap;gap:18px}
 
 <script>
 (function(){
-  var WHATSAPP='593962825787'; /* mismo número que la portada (WhatsApp de la Directora) */
-  var f=document.getElementById('f'),err=document.getElementById('err'),done=document.getElementById('done'),link=document.getElementById('done-link');
+  /* Inscripción por correo (desde el 6-nov-2026; antes la solicitud iba por WhatsApp).
+     · CAP.leadEndpoint: URL del servicio de Google Apps Script (guides/sitio-web/inscripciones-cap/Code.gs) que guarda la
+       solicitud en la hoja de inscripciones, avisa a hola@onlawacademy.com y confirma a la persona por correo.
+     · Al terminar, la página pasa a gracias/ con la solicitud guardada en sessionStorage:
+       ?via=servicio (el servicio la recibió), ?via=correo (sin servicio: se abrió el correo de la persona con la solicitud
+       lista) o ?via=manual (el servicio falló: la persona abre su correo desde el botón de la página de confirmación).
+     · CAP.leadToken: debe coincidir con TOKEN en Code.gs (filtra envíos automáticos; no es un secreto). */
+  var CAP=window.ONLAW_CAP||{leadEndpoint:'',leadToken:'onlaw-cap-2026-k4r9x2m7q1z8',correo:'hola@onlawacademy.com'};
+  window.ONLAW_CAP=CAP;
+  var f=document.getElementById('f'),err=document.getElementById('err'),btn=f.querySelector('button[type=submit]');
   var NOMBRES={completo:'Programa completo (MasterClass + Claude para Abogados) · USD 49 + IVA',masterclass:'Solo la MasterClass: Gemini Notebook para Abogados · gratuita'};
-  function v(n){return (f.elements[n].value||'').trim()}
-  function tel(){var n=v('whatsapp').replace(/\D/g,'').replace(/^593/,'').replace(/^0+/,'');return n}
+  function v(n){return (f.elements[n]&&f.elements[n].value||'').trim()}
+  function tel(){return v('celular').replace(/\D/g,'').replace(/^593/,'').replace(/^0+/,'')}
+  function texto(d){return ['Inscripción · Agremiado del Colegio de Abogados de Pichincha','Programa: '+d.programaNombre,'Nombre: '+d.nombre,'Cédula o matrícula: '+d.cedula,'Correo: '+d.correo,'Celular: +593 '+d.celular].join('\n')}
+  function mailto(d){return 'mailto:'+CAP.correo+'?subject='+encodeURIComponent('Inscripción CAP · '+d.nombre)+'&body='+encodeURIComponent(texto(d)+'\n\n(Enviado desde onlawacademy.com/cap)')}
+  function guardar(d){try{sessionStorage.setItem('onlaw_cap_solicitud',JSON.stringify({programa:d.programa,programaNombre:d.programaNombre,nombre:d.nombre,cedula:d.cedula,correo:d.correo,celular:d.celular}))}catch(e){}}
+  /* en el sitio, gracias/ abre la página de confirmación; abierto desde el disco (file:) hay que nombrar el archivo */
+  function gracias(via){location.replace((location.protocol==='file:'?'gracias/index.html':'gracias/')+'?via='+via)}
+  function abrirCorreo(d){
+    /* clic sintético dentro del gesto de la persona: abre su aplicación de correo con la solicitud lista */
+    var a=document.createElement('a');a.href=mailto(d);a.style.display='none';document.body.appendChild(a);
+    try{a.click()}catch(e){}a.remove();
+  }
   f.addEventListener('submit',function(e){
     e.preventDefault();
-    var nombre=v('nombre'),ced=v('cedula').replace(/\s/g,''),correo=v('correo'),wa=tel();
-    var msg='';
-    if(nombre.length<5||nombre.indexOf(' ')<0)msg='Escribe tu nombre y apellido.';
-    else if(!/^[0-9A-Za-z-]{5,20}$/.test(ced))msg='Revisa tu cédula o número de matrícula.';
-    else if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(correo))msg='Revisa tu correo electrónico.';
-    else if(wa.length<8||wa.length>10)msg='Revisa tu número de WhatsApp.';
-    else if(!f.elements.socio.checked)msg='Confirma que eres socio o afiliado activo del Colegio.';
-    else if(!f.elements.acepto.checked)msg='Para continuar, acepta la política de protección de datos y la política de uso.';
-    err.textContent=msg;
-    if(msg)return;
+    if(v('sitio'))return; /* campo trampa: solo lo rellenan los robots */
+    var nombre=v('nombre'),ced=v('cedula').replace(/\s/g,''),correo=v('correo'),cel=tel();
+    var m='';
+    if(nombre.length<5||nombre.indexOf(' ')<0)m='Escribe tu nombre y apellido.';
+    else if(!/^[0-9A-Za-z-]{5,20}$/.test(ced))m='Revisa tu cédula o número de matrícula.';
+    else if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(correo))m='Revisa tu correo electrónico.';
+    else if(cel.length<8||cel.length>10)m='Revisa tu número de celular.';
+    else if(!f.elements.socio.checked)m='Confirma que eres socio o afiliado activo del Colegio.';
+    else if(!f.elements.acepto.checked)m='Para continuar, acepta la política de protección de datos y la política de uso.';
+    err.textContent=m;
+    if(m)return;
     var prog=f.querySelector('input[name=programa]:checked').value;
-    var texto=['Inscripción · Agremiado del Colegio de Abogados de Pichincha','Programa: '+NOMBRES[prog],'Nombre: '+nombre,'Cédula o matrícula: '+ced,'Correo: '+correo,'WhatsApp: +593 '+wa].join('\n');
-    var url='https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(texto);
-    var a=document.createElement('a');a.href=url;a.target='_blank';a.rel='noopener noreferrer';a.style.display='none';
-    document.body.appendChild(a);a.click();a.remove();
-    link.href=url;
-    f.hidden=true;done.hidden=false;done.focus();
+    var d={token:CAP.leadToken,origen:'onlawacademy.com/cap',programa:prog,programaNombre:NOMBRES[prog],nombre:nombre,cedula:ced,correo:correo,celular:cel,fecha:new Date().toISOString()};
+    guardar(d);
+    btn.disabled=true;btn.textContent='Enviando…';
+    if(!CAP.leadEndpoint){abrirCorreo(d);setTimeout(function(){gracias('correo')},1800);return}
+    /* con servicio: pase lo que pase (respuesta, error o silencio), en menos de 8 s la página avanza */
+    var listo=false,ctl=('AbortController' in window)?new AbortController():null;
+    function fin(ok){if(listo)return;listo=true;clearTimeout(t);gracias(ok?'servicio':'manual')}
+    var t=setTimeout(function(){try{if(ctl)ctl.abort()}catch(e){}fin(false)},8000);
+    try{
+      /* text/plain: petición simple, sin preflight; Apps Script la lee igual */
+      fetch(CAP.leadEndpoint,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(d),redirect:'follow',signal:ctl?ctl.signal:undefined})
+        .then(function(r){return r.json()}).then(function(j){fin(!!(j&&j.ok))}).catch(function(){fin(false)});
+    }catch(e){fin(false)}
   });
 })();
 </script>
