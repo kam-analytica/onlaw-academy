@@ -155,6 +155,7 @@ input:focus-visible{outline:3px solid rgba(194,44,113,.35);border-color:var(--ma
 .tel span{font-weight:700;padding:13px 12px;border:1.5px solid #D9D0E2;border-radius:12px;background:var(--paper)}
 .chk{grid-column:1/-1;display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:14.5px;color:var(--txt);align-items:start}
 .chk input{margin-top:3px;accent-color:var(--magd);width:18px;height:18px}
+.chk[hidden]{display:none}
 .chk a{color:var(--magd);font-weight:700}
 .err{grid-column:1/-1;color:#B3261E;font-weight:700;font-size:14.5px;min-height:1px}
 form .btn{grid-column:1/-1;justify-self:start}
@@ -227,8 +228,8 @@ if(top!==self&&/(^|\.)onlawacademy\.com$/.test(location.hostname)){document.docu
     <div class="done" id="caja" tabindex="-1">
       <h3 id="h3">Qué sigue</h3>
       <ol>
-        <li id="p1">Validamos tu condición de socio o afiliado activo con el Colegio de Abogados de Pichincha.</li>
-        <li id="p2">Enseguida te enviamos a tu correo el enlace de pago (USD&nbsp;49&nbsp;+&nbsp;IVA) o el acceso a la MasterClass gratuita, y después los enlaces de las Sesiones y los materiales.</li>
+        <li id="p1">Si pediste el precio de agremiado, validamos tu condición de socio o afiliado activo con el Colegio de Abogados de Pichincha.</li>
+        <li id="p2">Enseguida te enviamos a tu correo el enlace de pago (USD&nbsp;49&nbsp;+&nbsp;IVA para agremiados; USD&nbsp;89&nbsp;+&nbsp;IVA para el público general) y, después, los enlaces de las Sesiones y los materiales. El programa empieza el lunes 16 de noviembre a las 18:00 con la MasterClass, incluida en tu inscripción.</li>
       </ol>
       <pre id="datos" hidden></pre>
       <div class="acc" id="acc" hidden>
@@ -257,12 +258,12 @@ if(top!==self&&/(^|\.)onlawacademy\.com$/.test(location.hostname)){document.docu
   var via=(location.search.match(/[?&]via=(servicio|correo|manual)/)||[])[1]||'';
   var d=null;try{d=JSON.parse(sessionStorage.getItem('onlaw_cap_solicitud')||'null')}catch(e){}
   var t=document.getElementById('t'),l=document.getElementById('l'),p1=document.getElementById('p1'),p2=document.getElementById('p2'),datos=document.getElementById('datos'),acc=document.getElementById('acc'),abrir=document.getElementById('abrir'),copiar=document.getElementById('copiar');
-  function texto(d){return ['Inscripción · Agremiado del Colegio de Abogados de Pichincha','Programa: '+d.programaNombre,'Nombre: '+d.nombre,'Cédula o matrícula: '+d.cedula,'Correo: '+d.correo,'Celular: +593 '+d.celular].join('\n')}
+  function texto(d){return ['Inscripción · Programa del Colegio de Abogados de Pichincha × On | Law Academy','Programa: '+d.programaNombre,'Nombre: '+d.nombre,'Cédula o matrícula: '+d.cedula,'Correo: '+d.correo,'Celular: +593 '+d.celular].join('\n')}
   function mailto(d){return 'mailto:'+CORREO+'?subject='+encodeURIComponent('Inscripción CAP · '+d.nombre)+'&body='+encodeURIComponent(texto(d)+'\n\n(Enviado desde onlawacademy.com/cap)')}
   if(location.protocol==='file:'){var vol=document.querySelector('a[href="../"]');if(vol)vol.href='../index.html'}
   var nombre=d&&d.nombre?d.nombre.split(' ')[0]:'';
-  var completo=!d||d.programa!=='masterclass';
-  p2.textContent=completo?'Enseguida te enviamos a tu correo el enlace de pago (USD 49 + IVA) y, después, los enlaces de las Sesiones y los materiales.':'Enseguida te enviamos a tu correo el acceso a la MasterClass gratuita del miércoles 11 de noviembre y los materiales.';
+  var agremiado=!d||d.programa!=='publico';
+  p2.textContent='Enseguida te enviamos a tu correo el enlace de pago ('+(agremiado?'USD 49 + IVA, precio de agremiado':'USD 89 + IVA, público general')+') y, después, los enlaces de las Sesiones y los materiales. El programa empieza el lunes 16 de noviembre a las 18:00 con la MasterClass, incluida en tu inscripción.';
   if(via==='servicio'&&d){
     t.textContent='¡Inscripción enviada!';
     l.textContent='Recibimos tu solicitud'+(nombre?', '+nombre:'')+'. En breves instantes te llegará un correo de confirmación a '+d.correo+' desde '+CORREO+'.';
