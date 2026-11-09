@@ -8,9 +8,9 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; media-src 'self'; connect-src 'self' https://script.google.com https://script.googleusercontent.com; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="robots" content="noindex, nofollow">
-<title>Inscripción enviada · On | Law Academy</title>
+<title>Inscripción · On | Law Academy</title>
 <meta name="description" content="Confirmación de la inscripción al programa del Colegio de Abogados de Pichincha y On | Law Academy.">
-<meta property="og:title" content="Inscripción enviada · On | Law Academy">
+<meta property="og:title" content="Inscripción · On | Law Academy">
 <meta property="og:description" content="Recibimos tu solicitud. Te escribimos desde hola@onlawacademy.com con los siguientes pasos.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.onlawacademy.com/cap/gracias/">
@@ -156,6 +156,23 @@ input:focus-visible{outline:3px solid rgba(194,44,113,.35);border-color:var(--ma
 .chk{grid-column:1/-1;display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:14.5px;color:var(--txt);align-items:start}
 .chk input{margin-top:3px;accent-color:var(--magd);width:18px;height:18px}
 .chk[hidden]{display:none}
+/* test 1 (9-nov-2026): primero la condición; el precio y los campos aparecen al elegirla */
+.hint{grid-column:1/-1;color:#5F6380;font-size:14.5px}
+.resto{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.hint[hidden],.resto[hidden],label.f[hidden],.prov[hidden]{display:none}
+.precio{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr;gap:6px 26px;align-items:center;border-radius:18px;padding:20px 24px;color:#fff;background:linear-gradient(165deg,#22253D 0%,#171929 100%)}
+.precio .pn{grid-column:1/-1;font-family:"Space Grotesk",monospace;font-weight:700;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--mag2)}
+.precio .pv{font-size:clamp(40px,5vw,54px);font-weight:800;letter-spacing:-.045em;line-height:1;white-space:nowrap}
+.precio .pv small{font-size:.38em;font-weight:700;letter-spacing:0}
+.precio p{color:var(--soft);font-size:14.5px}
+input[aria-invalid=true]{border-color:#B3261E}
+.prov{grid-column:1/-1;border:1.5px solid var(--line);border-radius:16px;padding:18px;background:var(--paper)}
+.prov p{font-size:14.5px;color:var(--txt)}
+.prov p b{display:block;font-size:16px;color:var(--ink);margin-bottom:2px}
+.prov-b{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.prov-b button,.prov-b a{font:700 15px/1.2 Manrope,sans-serif;padding:12px 16px;border-radius:12px;border:1.5px solid var(--magd);background:#fff;color:var(--magd);cursor:pointer;text-decoration:none}
+.prov-b button:hover,.prov-b a:hover{background:#FDF3F8}
+.prov-b button:focus-visible,.prov-b a:focus-visible{outline:3px solid rgba(194,44,113,.35);outline-offset:2px}
 .chk a{color:var(--magd);font-weight:700}
 .err{grid-column:1/-1;color:#B3261E;font-weight:700;font-size:14.5px;min-height:1px}
 form .btn{grid-column:1/-1;justify-self:start}
@@ -194,6 +211,8 @@ footer nav{display:flex;flex-wrap:wrap;gap:18px}
   .d b{font-size:26px}
   form{grid-template-columns:1fr;padding:20px}
   fieldset{grid-template-columns:1fr}
+  .resto,.precio{grid-template-columns:1fr}
+  .prov-b button,.prov-b a{flex:1 1 100%;text-align:center}
   .person{grid-template-columns:84px 1fr}
   .person img{width:84px;height:84px}
   form .btn{justify-self:stretch}
@@ -201,11 +220,22 @@ footer nav{display:flex;flex-wrap:wrap;gap:18px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
 </style>
 <style>
+.gr [hidden]{display:none!important}
 .gr .hero{padding-bottom:40px}.gr .hero h1{font-size:clamp(34px,5.4vw,60px)}.gr .lead{max-width:720px}
+.gr .estado{display:inline-flex;align-items:center;gap:10px;margin-top:20px;padding:10px 16px;border-radius:14px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.06);font-weight:700;font-size:14.5px;color:#fff;max-width:720px}
+.gr .estado::before{content:"";flex:none;width:10px;height:10px;border-radius:50%;background:var(--mag2)}
+.gr .estado.ok{border-color:rgba(120,220,170,.7);background:rgba(46,160,110,.2)}.gr .estado.ok::before{background:#78DCAA}
+.gr .estado.esp::before{animation:lat 1.2s ease-in-out infinite}
+@keyframes lat{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.gr .estado.esp::before{animation:none}}
+.gr .ins .w{display:grid;gap:18px}
 .gr .done{margin-top:0}.gr .done ol{margin:12px 0 0 20px;color:var(--txt)}.gr .done li{margin-top:8px}
-.gr pre{white-space:pre-wrap;word-break:break-word;font:inherit;font-size:.95em;line-height:1.5;margin:16px 0;padding:14px 16px;border:1px solid rgba(27,29,47,.15);border-radius:12px;background:#fff;color:var(--ink)}
-.gr .acc{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}.gr .acc .btn{width:auto;padding:13px 20px}
-.gr .sec{background:#fff;color:var(--magd);border:2px solid var(--magd);box-shadow:none}
+.gr details.done{padding:22px 30px}.gr details.done summary{font-size:19px}
+.gr pre{white-space:pre-wrap;word-break:break-word;font:inherit;font-size:.95em;line-height:1.5;margin:16px 0 0;padding:14px 16px;border:1px solid rgba(27,29,47,.15);border-radius:12px;background:var(--paper);color:var(--ink)}
+.gr .acc{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}.gr .acc .btn{width:auto;padding:13px 20px;font-size:15.5px}
+.gr .acc a.btn{color:#fff} /* .done a pinta los enlaces de magenta: el botón principal lleva texto blanco */
+.gr .sec,.gr .acc a.btn.sec{background:#fff;color:var(--magd);border:2px solid var(--magd);box-shadow:none}
+@media (max-width:620px){.gr details.done{padding:18px 20px}.gr .acc .btn{flex:1 1 100%}}
 </style>
 </head>
 <body class="gr">
@@ -219,23 +249,30 @@ if(top!==self&&/(^|\.)onlawacademy\.com$/.test(location.hostname)){document.docu
     <div class="k">Inscripción · Programa exclusivo para agremiados 2026</div>
     <h1 id="t">Inscripción</h1>
     <p class="lead" id="l">Si enviaste tu solicitud, en breve recibirás un correo de confirmación desde hola@onlawacademy.com.</p>
+    <p class="estado" id="estado" role="status" hidden></p>
   </div>
 </header>
 
 <main>
 <section class="ins">
-  <div class="w">
-    <div class="done" id="caja" tabindex="-1">
-      <h3 id="h3">Qué sigue</h3>
-      <ol>
-        <li id="p1">Si pediste el precio de agremiado, validamos tu condición de socio o afiliado activo con el Colegio de Abogados de Pichincha.</li>
-        <li id="p2">Enseguida te enviamos a tu correo el enlace de pago (USD&nbsp;49&nbsp;+&nbsp;IVA para agremiados; USD&nbsp;89&nbsp;+&nbsp;IVA para el público general) y, después, los enlaces de las Sesiones y los materiales. El programa empieza el lunes 16 de noviembre a las 18:00 con la MasterClass, incluida en tu inscripción.</li>
-      </ol>
-      <pre id="datos" hidden></pre>
-      <div class="acc" id="acc" hidden>
-        <a class="btn" id="abrir" href="mailto:hola@onlawacademy.com">Abrir mi correo con la solicitud</a>
-        <button type="button" class="btn sec" id="copiar">Copiar los datos</button>
+  <div class="w" id="cuerpo">
+    <details class="done" id="env" hidden>
+      <summary id="env-t">¿No se abrió tu correo?</summary>
+      <p id="env-p">Ábrelo otra vez con la solicitud lista para hola@onlawacademy.com.</p>
+      <div class="acc" id="acc"></div>
+      <pre id="datos"></pre>
+      <div class="acc">
+        <button type="button" class="btn sec" id="copiar">Copiar la solicitud</button>
+        <button type="button" class="btn" id="ya">Ya envié el correo</button>
       </div>
+    </details>
+    <div class="done" id="caja" tabindex="-1">
+      <h3>Qué sigue</h3>
+      <ol id="pasos">
+        <li>Revisa tu correo: te llega la confirmación de tu solicitud desde hola@onlawacademy.com.</li>
+        <li>Si eres afiliado, validamos tu afiliación con el Colegio de Abogados de Pichincha.</li>
+        <li>Te enviamos a tu correo el enlace de pago y, con tu pago confirmado, los enlaces de las Sesiones y los materiales. El programa empieza el lunes 16 de noviembre a las 18:00 con la MasterClass, incluida en tu inscripción.</li>
+      </ol>
       <p class="note">¿No ves nuestro correo en unos minutos? Revisa la carpeta de spam o escríbenos a <a href="mailto:hola@onlawacademy.com">hola@onlawacademy.com</a>.</p>
       <p><a href="../">Volver a la página del programa</a></p>
     </div>
@@ -252,38 +289,132 @@ if(top!==self&&/(^|\.)onlawacademy\.com$/.test(location.hostname)){document.docu
 
 <script>
 (function(){
-  /* La página /cap deja la solicitud en sessionStorage (solo en este navegador) y pasa aquí con ?via=servicio (el servicio
-     la recibió y ya envió la confirmación) o ?via=correo (se abrió el correo de la persona con la solicitud lista). */
+  /* TEST 1 (9-nov-2026). La página /cap deja la solicitud en sessionStorage (solo en este navegador) y pasa aquí con
+     ?via=pestana (el correo se abrió en otra pestaña) o ?via=correo (se abrió la aplicación de correo). Tres estados:
+       · pendiente: la persona todavía no ha salido a enviar el correo, o volvió enseguida.
+       · enviada:   salió hacia su correo y volvió (o pulsó «Ya envié el correo»). Una página web no puede ver la bandeja de
+                    nadie: este estado se deduce. Por eso deja siempre a mano el reenvío.
+       · recibida:  el servicio de hola@onlawacademy.com confirma que el correo llegó (solo si /cap tiene puesto CAP.servicio). */
+  /*<compartido>*/
+  /* Bloque compartido con gracias/index.html: generar_gracias.py lo copia tal cual. Se edita solo aquí. */
   var CORREO='hola@onlawacademy.com';
-  var via=(location.search.match(/[?&]via=(servicio|correo|manual)/)||[])[1]||'';
-  var d=null;try{d=JSON.parse(sessionStorage.getItem('onlaw_cap_solicitud')||'null')}catch(e){}
-  var t=document.getElementById('t'),l=document.getElementById('l'),p1=document.getElementById('p1'),p2=document.getElementById('p2'),datos=document.getElementById('datos'),acc=document.getElementById('acc'),abrir=document.getElementById('abrir'),copiar=document.getElementById('copiar');
-  function texto(d){return ['Inscripción · Programa del Colegio de Abogados de Pichincha × On | Law Academy','Programa: '+d.programaNombre,'Nombre: '+d.nombre,'Cédula o matrícula: '+d.cedula,'Correo: '+d.correo,'Celular: +593 '+d.celular].join('\n')}
-  function mailto(d){return 'mailto:'+CORREO+'?subject='+encodeURIComponent('Inscripción CAP · '+d.nombre)+'&body='+encodeURIComponent(texto(d)+'\n\n(Enviado desde onlawacademy.com/cap)')}
-  if(location.protocol==='file:'){var vol=document.querySelector('a[href="../"]');if(vol)vol.href='../index.html'}
-  var nombre=d&&d.nombre?d.nombre.split(' ')[0]:'';
-  var agremiado=!d||d.programa!=='publico';
-  p2.textContent='Enseguida te enviamos a tu correo el enlace de pago ('+(agremiado?'USD 49 + IVA, precio de agremiado':'USD 89 + IVA, público general')+') y, después, los enlaces de las Sesiones y los materiales. El programa empieza el lunes 16 de noviembre a las 18:00 con la MasterClass, incluida en tu inscripción.';
-  if(via==='servicio'&&d){
-    t.textContent='¡Inscripción enviada!';
-    l.textContent='Recibimos tu solicitud'+(nombre?', '+nombre:'')+'. En breves instantes te llegará un correo de confirmación a '+d.correo+' desde '+CORREO+'.';
-  }else if(via==='correo'&&d){
-    t.textContent='Casi listo: envía el correo';
-    l.textContent='Se abrió tu aplicación de correo con la solicitud lista para '+CORREO+'. Pulsa Enviar ahí; si ya lo hiciste, no tienes que hacer nada más. Si no se abrió, usa los botones de abajo.';
-    p1.textContent='En cuanto recibamos tu correo, validamos tu condición de socio o afiliado activo con el Colegio de Abogados de Pichincha.';
-    datos.textContent=texto(d);datos.hidden=false;abrir.href=mailto(d);acc.hidden=false;
-  }else if(via==='manual'&&d){
-    t.textContent='Un paso más: envía tu solicitud por correo';
-    l.textContent='No pudimos registrar tu solicitud automáticamente. Pulsa «Abrir mi correo con la solicitud» para enviarla a '+CORREO+', o copia los datos y envíalos a esa dirección.';
-    p1.textContent='En cuanto recibamos tu correo, validamos tu condición de socio o afiliado activo con el Colegio de Abogados de Pichincha.';
-    datos.textContent=texto(d);datos.hidden=false;abrir.href=mailto(d);acc.hidden=false;
+  var COND={afiliado:{programa:'completo',nombre:'Afiliado del Colegio de Abogados de Pichincha',precio:'USD 49 + IVA'},'no-afiliado':{programa:'publico',nombre:'No Afiliado',precio:'USD 89 + IVA'}};
+  var PROV={gmail:'Gmail',outlook:'Outlook · Hotmail',m365:'Outlook de trabajo (Microsoft 365)',yahoo:'Yahoo',app:'Otra aplicación de correo'};
+  var MOVIL=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||(/Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1);
+  /* texto del correo: una etiqueta por línea; Code.gs lo lee con esas mismas etiquetas */
+  function texto(d){
+    var a=d.condicion==='afiliado';
+    var L=['Inscripción · Programa del Colegio de Abogados de Pichincha × On | Law Academy','Condición: '+COND[d.condicion].nombre,'Programa: Programa completo · '+COND[d.condicion].precio,'Nombres completos: '+d.nombre,'Cédula de identidad: '+d.cedula];
+    if(a)L.push('Número de afiliación: '+d.afiliacion);
+    L.push('Correo: '+d.correo,'Celular: +593 '+d.celular,'Referencia: '+d.ref,'');
+    if(a)L.push('Declaro que soy socio o afiliado activo del Colegio de Abogados de Pichincha.');
+    L.push('Acepto la política de protección de datos personales y la política de uso de On | Law Academy.','','(Enviado desde onlawacademy.com/cap)');
+    return L.join('\n');
   }
+  function asunto(d){return 'Inscripción CAP · '+d.nombre}
+  /* enlace que abre un correo nuevo ya redactado en cada servicio; «app» usa la aplicación de correo del equipo */
+  function enlace(p,d){
+    var to=encodeURIComponent(CORREO),su=encodeURIComponent(asunto(d)),bo=encodeURIComponent(texto(d).replace(/\n/g,'\r\n'));
+    if(p==='gmail')return 'https://mail.google.com/mail/?view=cm&fs=1&to='+to+'&su='+su+'&body='+bo;
+    if(p==='outlook')return 'https://outlook.live.com/mail/0/deeplink/compose?to='+to+'&subject='+su+'&body='+bo;
+    if(p==='m365')return 'https://outlook.office.com/mail/deeplink/compose?to='+to+'&subject='+su+'&body='+bo;
+    if(p==='yahoo')return 'https://compose.mail.yahoo.com/?to='+to+'&subject='+su+'&body='+bo;
+    return 'mailto:'+CORREO+'?subject='+su+'&body='+bo;
+  }
+  /*</compartido>*/
+  var SS={g:function(k){try{return sessionStorage.getItem(k)}catch(e){return null}},s:function(k,x){try{sessionStorage.setItem(k,x)}catch(e){}}};
+  function $(i){return document.getElementById(i)}
+  if(location.protocol==='file:'){var vol=document.querySelector('a[href="../"]');if(vol)vol.href='../index.html'}
+  var via=(location.search.match(/[?&]via=(pestana|correo)/)||[])[1]||'correo';
+  var d=null;try{d=JSON.parse(SS.g('onlaw_cap_solicitud')||'null')}catch(e){}
+  if(!d||!COND[d.condicion]||!d.ref||!d.nombre)return; /* sin solicitud en este navegador: queda el texto general */
+  var t=$('t'),l=$('l'),est=$('estado'),pasos=$('pasos'),env=$('env'),envT=$('env-t'),envP=$('env-p'),acc=$('acc'),datos=$('datos'),copiar=$('copiar'),ya=$('ya'),caja=$('caja'),cuerpo=$('cuerpo');
+  var afiliado=d.condicion==='afiliado',nombre=d.nombre.split(' ')[0],precio=COND[d.condicion].precio;
+  var servicio=/^https:\/\/script\.google\.com\//.test(d.servicio||'')&&window.fetch?d.servicio:'';
+  var TARDE=4*60000; /* con servicio: pasado este tiempo sin recibir el correo, la página lo dice */
+
+  /* los pasos, según la condición */
+  var P=['Revisa tu correo: te llega la confirmación de tu solicitud desde '+CORREO+', con la referencia '+d.ref+'. Si no la ves en unos minutos, revisa la carpeta de spam.'];
+  if(afiliado)P.push('Validamos tu afiliación con el Colegio de Abogados de Pichincha.');
+  P.push('Te enviamos a tu correo el enlace de pago: '+precio+(afiliado?', precio de afiliado.':'.'));
+  P.push('Con tu pago confirmado, recibes los enlaces de las Sesiones y los materiales. El programa empieza el lunes 16 de noviembre a las 18:00 con la MasterClass, incluida en tu inscripción.');
+  pasos.textContent='';P.forEach(function(x){var li=document.createElement('li');li.textContent=x;pasos.appendChild(li)});
+
+  /* reenvío: los mismos enlaces que usa /cap; en el celular, solo la aplicación de correo */
+  datos.textContent=texto(d);
+  (MOVIL?['app']:['gmail','outlook','m365','yahoo','app']).forEach(function(p){
+    var a=document.createElement('a');a.className='btn'+(p===d.proveedor||MOVIL?'':' sec');a.href=enlace(p,d);
+    if(!(MOVIL&&p==='app')){a.target='_blank';a.rel='noopener'}
+    a.textContent=MOVIL?'Abrir mi aplicación de correo':PROV[p];acc.appendChild(a);
+  });
   copiar.addEventListener('click',function(){
     var s=datos.textContent;
-    function listo(){copiar.textContent='Copiado';setTimeout(function(){copiar.textContent='Copiar los datos'},2500)}
+    function listo(){copiar.textContent='Copiada';setTimeout(function(){copiar.textContent='Copiar la solicitud'},2500)}
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(s).then(listo,function(){})}
     else{var r=document.createRange();r.selectNodeContents(datos);var sel=getSelection();sel.removeAllRanges();sel.addRange(r);try{document.execCommand('copy');listo()}catch(e){}}
   });
+
+  var estado=SS.g('onlaw_cap_estado')||'',oculta=+SS.g('onlaw_cap_oculta')||0;
+  function marca(clase,txt){est.className='estado'+(clase?' '+clase:'');est.textContent=txt;est.hidden=!txt}
+  function pintar(){
+    env.hidden=false;
+    if(estado==='recibida'){
+      document.title='Solicitud recibida · On | Law Academy';
+      t.textContent='¡Recibimos tu solicitud!';
+      l.textContent='Gracias, '+nombre+'. Tu correo llegó a '+CORREO+' y te enviamos la confirmación a '+d.correo+'.';
+      marca('ok','Solicitud recibida · referencia '+d.ref);
+      env.hidden=true;
+    }else if(estado==='enviada'){
+      var tarde=servicio&&Date.now()-(+SS.g('onlaw_cap_enviada')||0)>=TARDE;
+      document.title='Solicitud enviada · On | Law Academy';
+      t.textContent='¡Solicitud enviada!';
+      l.textContent='Gracias, '+nombre+'. En unos minutos recibirás un correo de confirmación en '+d.correo+', desde '+CORREO+'.';
+      if(!servicio)marca('','');
+      else if(tarde)marca('','Todavía no recibimos tu correo. Si no llegaste a enviarlo, ábrelo otra vez aquí abajo.');
+      else marca('esp','Confirmando la recepción de tu correo: puede tardar hasta un minuto.');
+      envT.textContent='¿No llegaste a enviar el correo?';
+      envP.textContent='Ábrelo otra vez con la solicitud lista para '+CORREO+', o copia la solicitud y envíala a esa dirección.';
+      ya.hidden=true;env.open=!!tarde;cuerpo.appendChild(env);
+    }else{
+      document.title='Un paso más: envía el correo · On | Law Academy';
+      t.textContent='Un paso más: envía el correo';
+      l.textContent=(via==='pestana'?'Abrimos tu correo en otra pestaña':'Abrimos tu aplicación de correo')+', con la solicitud lista para '+CORREO+'. Pulsa Enviar ahí y vuelve a esta página.';
+      marca('','');
+      envT.textContent='¿No se abrió tu correo?';
+      envP.textContent='Ábrelo desde aquí con la solicitud lista para '+CORREO+', o copia la solicitud y envíala a esa dirección.';
+      ya.hidden=false;env.open=true;cuerpo.insertBefore(env,caja);
+    }
+  }
+  function enviada(){
+    if(estado)return;
+    estado='enviada';SS.s('onlaw_cap_estado',estado);SS.s('onlaw_cap_enviada',String(Date.now()));
+    pintar();if(servicio)setTimeout(pintar,TARDE+500);
+  }
+  function recibida(){estado='recibida';SS.s('onlaw_cap_estado',estado);pintar()}
+  /* la persona salió de esta pestaña (hacia su correo) y volvió pasados unos segundos: se da por enviada */
+  function ver(){
+    if(document.hidden){if(!oculta){oculta=Date.now();SS.s('onlaw_cap_oculta',String(oculta))}return}
+    if(!estado&&oculta&&Date.now()-oculta>=4000&&(!document.hasFocus||document.hasFocus()))enviada();
+  }
+  document.addEventListener('visibilitychange',ver);
+  window.addEventListener('blur',function(){if(!oculta){oculta=Date.now();SS.s('onlaw_cap_oculta',String(oculta))}});
+  window.addEventListener('focus',ver);window.addEventListener('pageshow',ver);
+  ya.addEventListener('click',enviada);
+  pintar();ver();
+  if(estado==='enviada'&&servicio)setTimeout(pintar,Math.max(500,TARDE-(Date.now()-(+SS.g('onlaw_cap_enviada')||0))+500));
+
+  /* con servicio: pregunta cada 6 s (hasta 20 min) si el correo con esta referencia ya llegó a hola@onlawacademy.com */
+  if(servicio&&estado!=='recibida'){
+    var t0=Date.now();
+    (function una(){
+      if(estado==='recibida')return;
+      function sig(){if(Date.now()-t0<20*60000)setTimeout(una,6000)}
+      try{
+        fetch(servicio+(servicio.indexOf('?')<0?'?':'&')+'ref='+encodeURIComponent(d.ref)+'&_='+Date.now(),{redirect:'follow'})
+          .then(function(r){return r.json()}).then(function(j){if(j&&j.recibido)recibida();else sig()},sig);
+      }catch(e){sig()}
+    })();
+  }
 })();
 </script>
 </body>
