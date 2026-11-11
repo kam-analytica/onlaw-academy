@@ -153,10 +153,14 @@ input[type=text],input[type=email],input[type=tel]{font:500 16px Manrope,sans-se
 input:focus-visible{outline:3px solid rgba(194,44,113,.35);border-color:var(--magd)}
 .tel{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center}
 .tel span{font-weight:700;padding:13px 12px;border:1.5px solid #D9D0E2;border-radius:12px;background:var(--paper)}
-.chk{grid-column:1/-1;display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:14.5px;color:var(--txt);align-items:start}
+.chk{grid-column:1/-1;display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:14.5px;color:var(--txt);align-items:start;padding:9px 0;margin:-6px 0;cursor:pointer} /* área táctil de 40 px */
 .chk input{margin-top:3px;accent-color:var(--magd);width:18px;height:18px}
 .chk[hidden]{display:none}
-/* test 1 (9-nov-2026): primero la condición; el precio y los campos aparecen al elegirla */
+/* registros-cap-1 (9-nov-2026): primero la condición; el precio y los campos aparecen al elegirla */
+.aviso{grid-column:1/-1;border:1.5px solid #E7C873;border-radius:14px;padding:14px 16px;background:#FFF8E6;color:#5A4300;font-size:14.5px;line-height:1.5}
+.aviso b{display:block;color:#3F2F00}
+.aviso[hidden]{display:none}
+form noscript{grid-column:1/-1;display:block}
 .hint{grid-column:1/-1;color:#5F6380;font-size:14.5px}
 .resto{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .hint[hidden],.resto[hidden],label.f[hidden],.prov[hidden]{display:none}
@@ -330,6 +334,8 @@ footer nav{display:flex;flex-wrap:wrap;gap:18px}
         <label class="opt"><input type="radio" name="condicion" value="afiliado"><div><b>Afiliado del Colegio de Abogados de Pichincha</b><span>Soy socio o afiliado activo del Colegio.</span></div></label>
         <label class="opt"><input type="radio" name="condicion" value="no-afiliado"><div><b>No Afiliado</b><span>Me inscribo como público en general.</span></div></label>
       </fieldset>
+      <p class="aviso" id="inapp" hidden><b>Abre esta página en tu navegador</b>Estás dentro de Instagram, Facebook o TikTok, y aquí tu correo puede no abrirse. Toca el menú ⋯ de arriba y elige «Abrir en el navegador», o copia este enlace en Safari o Chrome: onlawacademy.com/cap</p>
+      <noscript><p class="aviso"><b>Activa JavaScript para inscribirte en línea</b>También puedes escribir a hola@onlawacademy.com con el asunto «Inscripción CAP» y estos datos: si eres afiliado del Colegio, nombres completos, cédula, número de afiliación, correo y celular.</p></noscript>
       <p class="hint" id="hint">Elige una opción para ver tu precio y completar la inscripción.</p>
       <div class="resto" id="resto" hidden>
         <div class="precio" aria-live="polite"><div class="pn" id="pn"></div><div class="pv"><span id="pv"></span> <small>+ IVA</small></div><p id="pp"></p></div>
@@ -337,7 +343,7 @@ footer nav{display:flex;flex-wrap:wrap;gap:18px}
         <label class="f">Cédula de identidad<input type="text" name="cedula" inputmode="numeric" autocomplete="off" spellcheck="false" maxlength="10" required placeholder="10 dígitos"></label>
         <label class="f" id="f-afi">Número de afiliación<input type="text" name="afiliacion" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="15" required placeholder="Tu número de afiliado del Colegio"></label>
         <label class="f">Correo electrónico<input type="email" name="correo" autocomplete="email" spellcheck="false" maxlength="90" required placeholder="Personal o profesional"></label>
-        <label class="f" id="f-cel">Celular<div class="tel"><span>+593</span><input type="tel" name="celular" inputmode="numeric" autocomplete="tel-national" maxlength="14" required placeholder="99 999 9999"></div></label>
+        <label class="f" id="f-cel">Celular<div class="tel"><span>+593</span><input type="tel" name="celular" inputmode="numeric" autocomplete="tel-national" maxlength="24" required placeholder="99 999 9999"></div></label>
         <label class="f full" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden" aria-hidden="true">Sitio web<input type="text" name="sitio" tabindex="-1" autocomplete="off"></label>
         <label class="chk" id="chk-socio"><input type="checkbox" name="socio"><span>Declaro que soy socio o afiliado activo del Colegio de Abogados de Pichincha.</span></label>
         <label class="chk"><input type="checkbox" name="acepto" required><span>Acepto la <a href="/politica-de-proteccion-de-datos-personales.html" target="_blank" rel="noopener">política de protección de datos personales</a> y la <a href="/politica-de-uso.html" target="_blank" rel="noopener">política de uso</a> de On | Law Academy.</span></label>
@@ -387,7 +393,8 @@ footer nav{display:flex;flex-wrap:wrap;gap:18px}
 
 <script>
 (function(){
-  /* TEST 1 (9-nov-2026) · inscripción por correo, con la condición primero.
+  /* registros-cap-1 · primera versión en producción del ecosistema de registros de On | Law (antes «Test 1», 9-nov-2026;
+     correcciones del 11-nov-2026 tras la auditoría). Inscripción por correo, con la condición primero.
      1. La persona elige «Afiliado del Colegio de Abogados de Pichincha» o «No Afiliado»: solo entonces aparecen su precio y
         los campos que le corresponden (el número de afiliación y la declaración de agremiado, solo si es afiliada).
      2. Al enviar, su correo se abre en una pestaña nueva con la solicitud lista para hola@onlawacademy.com: Gmail, Outlook o
@@ -404,6 +411,8 @@ footer nav{display:flex;flex-wrap:wrap;gap:18px}
   var COND={afiliado:{programa:'completo',nombre:'Afiliado del Colegio de Abogados de Pichincha',precio:'USD 49 + IVA'},'no-afiliado':{programa:'publico',nombre:'No Afiliado',precio:'USD 89 + IVA'}};
   var PROV={gmail:'Gmail',outlook:'Outlook · Hotmail',m365:'Outlook de trabajo (Microsoft 365)',yahoo:'Yahoo',app:'Otra aplicación de correo'};
   var MOVIL=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||(/Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1);
+  /* navegadores internos de las aplicaciones: ahí los enlaces de correo suelen no abrir nada */
+  var INAPP=/Instagram|FBAN|FBAV|FB_IAB|FB4A|TikTok|musical_ly|BytedanceWebview/i.test(navigator.userAgent);
   /* texto del correo: una etiqueta por línea; Code.gs lo lee con esas mismas etiquetas */
   function texto(d){
     var a=d.condicion==='afiliado';
@@ -414,7 +423,8 @@ footer nav{display:flex;flex-wrap:wrap;gap:18px}
     L.push('Acepto la política de protección de datos personales y la política de uso de On | Law Academy.','','(Enviado desde onlawacademy.com/cap)');
     return L.join('\n');
   }
-  function asunto(d){return 'Inscripción CAP · '+d.nombre}
+  /* la referencia en el asunto: un segundo envío corregido (referencia nueva) no se agrupa en Gmail con el anterior */
+  function asunto(d){return 'Inscripción CAP · '+d.nombre+' · '+d.ref}
   /* enlace que abre un correo nuevo ya redactado en cada servicio; «app» usa la aplicación de correo del equipo */
   function enlace(p,d){
     var to=encodeURIComponent(CORREO),su=encodeURIComponent(asunto(d)),bo=encodeURIComponent(texto(d).replace(/\n/g,'\r\n'));
@@ -433,7 +443,8 @@ footer nav{display:flex;flex-wrap:wrap;gap:18px}
     'no-afiliado':['Tu precio · no afiliado','USD 89','Programa completo: MasterClass gratuita (lunes 16) y Claude para Abogados (17, 18 y 19 de noviembre). Si te afilias al Colegio de Abogados de Pichincha, accedes al precio de afiliado.']
   };
   function cond(){var r=f.querySelector('input[name=condicion]:checked');return r?r.value:''}
-  function limpiar(){err.textContent='';Array.prototype.forEach.call(f.querySelectorAll('[aria-invalid]'),function(i){i.removeAttribute('aria-invalid')})}
+  function limpiar(){err.textContent='';Array.prototype.forEach.call(f.querySelectorAll('[aria-invalid]'),function(i){i.removeAttribute('aria-invalid');i.removeAttribute('aria-describedby')})}
+  if(INAPP)document.getElementById('inapp').hidden=false;
   /* según la condición: un solo precio, y el número de afiliación y la declaración de agremiado solo para afiliados */
   function pintar(){
     var c=cond();if(!c)return;
@@ -447,9 +458,12 @@ footer nav{display:flex;flex-wrap:wrap;gap:18px}
   Array.prototype.forEach.call(f.querySelectorAll('input[name=condicion]'),function(r){r.addEventListener('change',pintar)});
   pintar();window.addEventListener('pageshow',pintar);
   f.elements.cedula.addEventListener('input',function(){var x=this.value.replace(/\D/g,'').slice(0,10);if(x!==this.value)this.value=x});
-  f.addEventListener('input',function(e){if(e.target&&e.target.removeAttribute)e.target.removeAttribute('aria-invalid')});
+  f.addEventListener('input',function(e){if(e.target&&e.target.removeAttribute){e.target.removeAttribute('aria-invalid');e.target.removeAttribute('aria-describedby')}});
   function v(n){return (f.elements[n]&&f.elements[n].value||'').trim()}
+  /* celular ecuatoriano sin el prefijo: quita +593 y el 0 inicial; debe quedar 9 seguido de ocho dígitos */
   function tel(){return v('celular').replace(/\D/g,'').replace(/^593/,'').replace(/^0+/,'')}
+  var SOLO_LETRAS=null;try{SOLO_LETRAS=new RegExp("^[\\p{L}\\p{M}'’.\\- ]+$",'u')}catch(e){}
+  var ERRATAS={'gmail.con':'gmail.com','gmial.com':'gmail.com','gmai.com':'gmail.com','gmail.cm':'gmail.com','hotmail.con':'hotmail.com','hotmial.com':'hotmail.com','hotmai.com':'hotmail.com','outlook.con':'outlook.com','yahoo.con':'yahoo.com'};
   /* cédula ecuatoriana (nacional, naturalizado o residente): 10 dígitos, provincia 01–24 o 30, tercer dígito 0–5 y dígito verificador (módulo 10) */
   function cedulaOk(c){
     if(!/^\d{10}$/.test(c))return false;
@@ -460,7 +474,7 @@ footer nav{display:flex;flex-wrap:wrap;gap:18px}
   function falla(campo,m){
     limpiar();err.textContent=m;
     var i=campo==='condicion'?f.querySelector('input[name=condicion]'):f.elements[campo];
-    if(i){if(i.type!=='checkbox'&&i.type!=='radio')i.setAttribute('aria-invalid','true');try{i.focus()}catch(e){}}
+    if(i){if(i.type!=='checkbox'&&i.type!=='radio'){i.setAttribute('aria-invalid','true');i.setAttribute('aria-describedby','err')}try{i.focus()}catch(e){}}
     return null;
   }
   var REF='';
@@ -476,15 +490,17 @@ footer nav{display:flex;flex-wrap:wrap;gap:18px}
     var c=cond();
     if(!c)return falla('condicion','Indica si eres afiliado del Colegio de Abogados de Pichincha o no afiliado.');
     var a=c==='afiliado',nombre=v('nombre').replace(/\s+/g,' '),ced=v('cedula').replace(/\D/g,''),afi=v('afiliacion').replace(/\s+/g,' '),correo=v('correo'),cel=tel();
-    if(nombre.length<5||nombre.indexOf(' ')<0)return falla('nombre','Escribe tus nombres y apellidos completos.');
+    if(nombre.length<5||nombre.indexOf(' ')<0||(SOLO_LETRAS&&!SOLO_LETRAS.test(nombre)))return falla('nombre','Escribe tus nombres y apellidos completos, solo con letras.');
     if(!cedulaOk(ced))return falla('cedula','Revisa tu cédula de identidad: son 10 dígitos. Si el problema continúa, escríbenos a '+CORREO+'.');
     if(a&&!/^(?=.*\d)[0-9A-Za-z.\/ -]{1,15}$/.test(afi))return falla('afiliacion','Escribe tu número de afiliación del Colegio.');
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(correo))return falla('correo','Revisa tu correo electrónico.');
-    if(cel.length<8||cel.length>10)return falla('celular','Revisa tu número de celular.');
+    var dom=correo.split('@')[1].toLowerCase();
+    if(ERRATAS[dom])return falla('correo','Revisa tu correo: ¿quisiste escribir '+correo.split('@')[0]+'@'+ERRATAS[dom]+'?');
+    if(!/^9\d{8}$/.test(cel))return falla('celular','Revisa tu número de celular: son 9 dígitos después del 0. Ejemplo: 99 123 4567.');
     if(a&&!f.elements.socio.checked)return falla('socio','Confirma que eres socio o afiliado activo del Colegio, o elige la opción «No Afiliado».');
     if(!f.elements.acepto.checked)return falla('acepto','Para continuar, acepta la política de protección de datos y la política de uso.');
     limpiar();
-    return {origen:'onlawacademy.com/cap',prueba:'test-1',condicion:c,programa:COND[c].programa,programaNombre:'Programa completo · '+(a?'afiliado del Colegio':'no afiliado')+' · '+COND[c].precio,nombre:nombre,cedula:ced,afiliacion:a?afi:'',correo:correo,celular:cel,ref:ref(),servicio:CAP.servicio||'',fecha:new Date().toISOString()};
+    return {origen:'onlawacademy.com/cap',version:'registros-cap-1',condicion:c,programa:COND[c].programa,programaNombre:'Programa completo · '+(a?'afiliado del Colegio':'no afiliado')+' · '+COND[c].precio,nombre:nombre,cedula:ced,afiliacion:a?afi:'',correo:correo,celular:cel,ref:ref(),servicio:CAP.servicio||'',fecha:new Date().toISOString()};
   }
   function proveedor(correo){
     var m=(correo.split('@')[1]||'').toLowerCase();
