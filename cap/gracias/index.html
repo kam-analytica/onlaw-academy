@@ -276,8 +276,9 @@ if(top!==self&&/(^|\.)onlawacademy\.com$/.test(location.hostname)){document.docu
       <ol id="pasos">
         <li>Revisa tu correo: te llega la confirmación de tu solicitud desde hola@onlawacademy.com.</li>
         <li>Si eres afiliado, validamos tu afiliación con el Colegio de Abogados de Pichincha.</li>
-        <li>Te enviamos a tu correo el enlace de pago y, con tu pago confirmado, los enlaces de las Sesiones y los materiales. El programa empieza el lunes 16 de noviembre a las 18:00 con la MasterClass, incluida en tu inscripción.</li>
+        <li>Paga por transferencia o con Deuna, envíanos tu comprobante y recibe los enlaces de las Sesiones y los materiales. El programa empieza el lunes 16 de noviembre a las 18:00 con la MasterClass, incluida en tu inscripción.</li>
       </ol>
+      <div class="acc" id="pago" hidden><a class="btn" id="pagar" href="../payment/">Ver las formas de pago</a></div>
       <p class="note">¿No ves nuestro correo en unos minutos? Revisa la carpeta de spam o escríbenos a <a href="mailto:hola@onlawacademy.com">hola@onlawacademy.com</a>.</p>
       <p><a href="../">Volver a la página del programa</a></p>
     </div>
@@ -303,7 +304,7 @@ if(top!==self&&/(^|\.)onlawacademy\.com$/.test(location.hostname)){document.docu
   /*<compartido>*/
   /* Bloque compartido con gracias/index.html: generar_gracias.py lo copia tal cual. Se edita solo aquí. */
   var CORREO='hola@onlawacademy.com';
-  var COND={afiliado:{programa:'completo',nombre:'Afiliado del Colegio de Abogados de Pichincha',precio:'USD 49 + IVA'},'no-afiliado':{programa:'publico',nombre:'No Afiliado',precio:'USD 89 + IVA'}};
+  var COND={afiliado:{programa:'completo',nombre:'Afiliado del Colegio de Abogados de Pichincha',precio:'USD 49 + IVA',total:'USD 56.35',clave:'a'},'no-afiliado':{programa:'publico',nombre:'No Afiliado',precio:'USD 89 + IVA',total:'USD 102.35',clave:'n'}};
   var PROV={gmail:'Gmail',outlook:'Outlook · Hotmail',m365:'Outlook de trabajo (Microsoft 365)',yahoo:'Yahoo',app:'Otra aplicación de correo'};
   var MOVIL=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||(/Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1);
   /* navegadores internos de las aplicaciones: ahí los enlaces de correo suelen no abrir nada */
@@ -342,10 +343,12 @@ if(top!==self&&/(^|\.)onlawacademy\.com$/.test(location.hostname)){document.docu
   var TARDE=4*60000; /* con servicio: pasado este tiempo sin recibir el correo, la página lo dice */
 
   /* los pasos, según la condición */
-  var P=['Revisa tu correo: te llega la confirmación de tu solicitud desde '+CORREO+', con la referencia '+d.ref+'. Si no la ves en unos minutos, revisa la carpeta de spam.'];
-  if(afiliado)P.push('Validamos tu afiliación con el Colegio de Abogados de Pichincha.');
-  P.push('Te enviamos a tu correo el enlace de pago: '+precio+(afiliado?', precio de afiliado.':'.'));
+  var P=['Revisa tu correo: te llega la confirmación de tu solicitud desde '+CORREO+', con la referencia '+d.ref+' y el enlace de pago. Si no la ves en unos minutos, revisa la carpeta de spam.'];
+  P.push('Paga tu inscripción: '+COND[d.condicion].total+', que es '+precio.replace(' + IVA','')+' más IVA'+(afiliado?', precio de afiliado':'')+'. Por transferencia a Produbanco o a Banco del Pacífico, o con Deuna.');
+  P.push('Envía tu comprobante a '+CORREO+(afiliado?'. Validamos tu afiliación con el Colegio de Abogados de Pichincha.':'.'));
   P.push('Con tu pago confirmado, recibes los enlaces de las Sesiones y los materiales. El programa empieza el lunes 16 de noviembre a las 18:00 con la MasterClass, incluida en tu inscripción.');
+  /* la página de pago recibe la condición y la referencia: ninguno de los dos datos identifica a la persona */
+  $('pagar').href=(location.protocol==='file:'?'../payment/index.html':'../payment/')+'?c='+COND[d.condicion].clave+'&r='+encodeURIComponent(d.ref);
   pasos.textContent='';P.forEach(function(x){var li=document.createElement('li');li.textContent=x;pasos.appendChild(li)});
 
   /* reenvío: los mismos enlaces que usa /cap; en el celular, solo la aplicación de correo */
@@ -372,7 +375,7 @@ if(top!==self&&/(^|\.)onlawacademy\.com$/.test(location.hostname)){document.docu
       t.textContent='¡Recibimos tu solicitud!';
       l.textContent='Gracias, '+nombre+'. Tu correo llegó a '+CORREO+' y te enviamos la confirmación a '+d.correo+'.';
       marca('ok','Solicitud recibida · referencia '+d.ref);
-      env.hidden=true;
+      env.hidden=true;$('pago').hidden=false;
     }else if(estado==='enviada'){
       var tarde=servicio&&Date.now()-(+SS.g('onlaw_cap_enviada')||0)>=TARDE;
       document.title='Solicitud enviada · On | Law Academy';
@@ -383,7 +386,7 @@ if(top!==self&&/(^|\.)onlawacademy\.com$/.test(location.hostname)){document.docu
       else marca('esp','Confirmando la recepción de tu correo: puede tardar hasta un minuto.');
       envT.textContent='¿No llegaste a enviar el correo?';
       envP.textContent='Ábrelo otra vez con la solicitud lista para '+CORREO+'. Si no se abre, copia la solicitud y envíala desde tu correo a esa dirección, con el asunto «Inscripción CAP».';
-      ya.hidden=true;env.open=!!tarde;cuerpo.appendChild(env);
+      ya.hidden=true;env.open=!!tarde;cuerpo.appendChild(env);$('pago').hidden=false;
     }else{
       document.title='Un paso más: envía el correo · On | Law Academy';
       t.textContent='Un paso más: envía el correo';
@@ -391,7 +394,7 @@ if(top!==self&&/(^|\.)onlawacademy\.com$/.test(location.hostname)){document.docu
       marca('','');
       envT.textContent=MOVIL?'¿No se abrió tu aplicación de correo?':'¿No se abrió tu correo?';
       envP.textContent=MOVIL?'Copia la solicitud y envíala desde tu correo a '+CORREO+', con el asunto «Inscripción CAP». También puedes intentar abrir la aplicación otra vez.':'Ábrelo desde aquí con la solicitud lista para '+CORREO+'. Si no se abre, copia la solicitud y envíala a esa dirección, con el asunto «Inscripción CAP».';
-      ya.hidden=false;env.open=true;cuerpo.insertBefore(env,caja);
+      ya.hidden=false;env.open=true;cuerpo.insertBefore(env,caja);$('pago').hidden=true;
     }
   }
   function enviada(){
