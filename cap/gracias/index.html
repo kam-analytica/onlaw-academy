@@ -153,10 +153,14 @@ input[type=text],input[type=email],input[type=tel]{font:500 16px Manrope,sans-se
 input:focus-visible{outline:3px solid rgba(194,44,113,.35);border-color:var(--magd)}
 .tel{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:center}
 .tel span{font-weight:700;padding:13px 12px;border:1.5px solid #D9D0E2;border-radius:12px;background:var(--paper)}
-.chk{grid-column:1/-1;display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:14.5px;color:var(--txt);align-items:start}
+.chk{grid-column:1/-1;display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:14.5px;color:var(--txt);align-items:start;padding:9px 0;margin:-6px 0;cursor:pointer} /* área táctil de 40 px */
 .chk input{margin-top:3px;accent-color:var(--magd);width:18px;height:18px}
 .chk[hidden]{display:none}
-/* test 1 (9-nov-2026): primero la condición; el precio y los campos aparecen al elegirla */
+/* registros-cap-1 (9-nov-2026): primero la condición; el precio y los campos aparecen al elegirla */
+.aviso{grid-column:1/-1;border:1.5px solid #E7C873;border-radius:14px;padding:14px 16px;background:#FFF8E6;color:#5A4300;font-size:14.5px;line-height:1.5}
+.aviso b{display:block;color:#3F2F00}
+.aviso[hidden]{display:none}
+form noscript{grid-column:1/-1;display:block}
 .hint{grid-column:1/-1;color:#5F6380;font-size:14.5px}
 .resto{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .hint[hidden],.resto[hidden],label.f[hidden],.prov[hidden]{display:none}
@@ -263,6 +267,7 @@ if(top!==self&&/(^|\.)onlawacademy\.com$/.test(location.hostname)){document.docu
       <pre id="datos"></pre>
       <div class="acc">
         <button type="button" class="btn sec" id="copiar">Copiar la solicitud</button>
+        <button type="button" class="btn sec" id="copiar-dest">Copiar el correo de destino</button>
         <button type="button" class="btn" id="ya">Ya envié el correo</button>
       </div>
     </details>
@@ -289,7 +294,7 @@ if(top!==self&&/(^|\.)onlawacademy\.com$/.test(location.hostname)){document.docu
 
 <script>
 (function(){
-  /* TEST 1 (9-nov-2026). La página /cap deja la solicitud en sessionStorage (solo en este navegador) y pasa aquí con
+  /* registros-cap-1. La página /cap deja la solicitud en sessionStorage (solo en este navegador) y pasa aquí con
      ?via=pestana (el correo se abrió en otra pestaña) o ?via=correo (se abrió la aplicación de correo). Tres estados:
        · pendiente: la persona todavía no ha salido a enviar el correo, o volvió enseguida.
        · enviada:   salió hacia su correo y volvió (o pulsó «Ya envié el correo»). Una página web no puede ver la bandeja de
@@ -301,6 +306,8 @@ if(top!==self&&/(^|\.)onlawacademy\.com$/.test(location.hostname)){document.docu
   var COND={afiliado:{programa:'completo',nombre:'Afiliado del Colegio de Abogados de Pichincha',precio:'USD 49 + IVA'},'no-afiliado':{programa:'publico',nombre:'No Afiliado',precio:'USD 89 + IVA'}};
   var PROV={gmail:'Gmail',outlook:'Outlook · Hotmail',m365:'Outlook de trabajo (Microsoft 365)',yahoo:'Yahoo',app:'Otra aplicación de correo'};
   var MOVIL=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||(/Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1);
+  /* navegadores internos de las aplicaciones: ahí los enlaces de correo suelen no abrir nada */
+  var INAPP=/Instagram|FBAN|FBAV|FB_IAB|FB4A|TikTok|musical_ly|BytedanceWebview/i.test(navigator.userAgent);
   /* texto del correo: una etiqueta por línea; Code.gs lo lee con esas mismas etiquetas */
   function texto(d){
     var a=d.condicion==='afiliado';
@@ -311,7 +318,8 @@ if(top!==self&&/(^|\.)onlawacademy\.com$/.test(location.hostname)){document.docu
     L.push('Acepto la política de protección de datos personales y la política de uso de On | Law Academy.','','(Enviado desde onlawacademy.com/cap)');
     return L.join('\n');
   }
-  function asunto(d){return 'Inscripción CAP · '+d.nombre}
+  /* la referencia en el asunto: un segundo envío corregido (referencia nueva) no se agrupa en Gmail con el anterior */
+  function asunto(d){return 'Inscripción CAP · '+d.nombre+' · '+d.ref}
   /* enlace que abre un correo nuevo ya redactado en cada servicio; «app» usa la aplicación de correo del equipo */
   function enlace(p,d){
     var to=encodeURIComponent(CORREO),su=encodeURIComponent(asunto(d)),bo=encodeURIComponent(texto(d).replace(/\n/g,'\r\n'));
@@ -328,7 +336,7 @@ if(top!==self&&/(^|\.)onlawacademy\.com$/.test(location.hostname)){document.docu
   var via=(location.search.match(/[?&]via=(pestana|correo)/)||[])[1]||'correo';
   var d=null;try{d=JSON.parse(SS.g('onlaw_cap_solicitud')||'null')}catch(e){}
   if(!d||!COND[d.condicion]||!d.ref||!d.nombre)return; /* sin solicitud en este navegador: queda el texto general */
-  var t=$('t'),l=$('l'),est=$('estado'),pasos=$('pasos'),env=$('env'),envT=$('env-t'),envP=$('env-p'),acc=$('acc'),datos=$('datos'),copiar=$('copiar'),ya=$('ya'),caja=$('caja'),cuerpo=$('cuerpo');
+  var t=$('t'),l=$('l'),est=$('estado'),pasos=$('pasos'),env=$('env'),envT=$('env-t'),envP=$('env-p'),acc=$('acc'),datos=$('datos'),copiar=$('copiar'),copiarDest=$('copiar-dest'),ya=$('ya'),caja=$('caja'),cuerpo=$('cuerpo');
   var afiliado=d.condicion==='afiliado',nombre=d.nombre.split(' ')[0],precio=COND[d.condicion].precio;
   var servicio=/^https:\/\/script\.google\.com\//.test(d.servicio||'')&&window.fetch?d.servicio:'';
   var TARDE=4*60000; /* con servicio: pasado este tiempo sin recibir el correo, la página lo dice */
@@ -347,12 +355,13 @@ if(top!==self&&/(^|\.)onlawacademy\.com$/.test(location.hostname)){document.docu
     if(!(MOVIL&&p==='app')){a.target='_blank';a.rel='noopener'}
     a.textContent=MOVIL?'Abrir mi aplicación de correo':PROV[p];acc.appendChild(a);
   });
-  copiar.addEventListener('click',function(){
-    var s=datos.textContent;
-    function listo(){copiar.textContent='Copiada';setTimeout(function(){copiar.textContent='Copiar la solicitud'},2500)}
+  function copiarTexto(boton,s,nodo,hecho,normal){
+    function listo(){boton.textContent=hecho;setTimeout(function(){boton.textContent=normal},2500)}
     if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(s).then(listo,function(){})}
-    else{var r=document.createRange();r.selectNodeContents(datos);var sel=getSelection();sel.removeAllRanges();sel.addRange(r);try{document.execCommand('copy');listo()}catch(e){}}
-  });
+    else{var r=document.createRange();r.selectNodeContents(nodo);var sel=getSelection();sel.removeAllRanges();sel.addRange(r);try{document.execCommand('copy');listo()}catch(e){}}
+  }
+  copiar.addEventListener('click',function(){copiarTexto(copiar,datos.textContent,datos,'Copiada','Copiar la solicitud')});
+  copiarDest.addEventListener('click',function(){copiarTexto(copiarDest,CORREO,envP,'Copiado','Copiar el correo de destino')});
 
   var estado=SS.g('onlaw_cap_estado')||'',oculta=+SS.g('onlaw_cap_oculta')||0;
   function marca(clase,txt){est.className='estado'+(clase?' '+clase:'');est.textContent=txt;est.hidden=!txt}
@@ -368,20 +377,20 @@ if(top!==self&&/(^|\.)onlawacademy\.com$/.test(location.hostname)){document.docu
       var tarde=servicio&&Date.now()-(+SS.g('onlaw_cap_enviada')||0)>=TARDE;
       document.title='Solicitud enviada · On | Law Academy';
       t.textContent='¡Solicitud enviada!';
-      l.textContent='Gracias, '+nombre+'. En unos minutos recibirás un correo de confirmación en '+d.correo+', desde '+CORREO+'.';
+      l.textContent='Gracias, '+nombre+'. En unos minutos recibirás un correo de confirmación en '+d.correo+', desde '+CORREO+'. Si no llega, vuelve a enviar tu solicitud desde esta página.';
       if(!servicio)marca('','');
       else if(tarde)marca('','Todavía no recibimos tu correo. Si no llegaste a enviarlo, ábrelo otra vez aquí abajo.');
       else marca('esp','Confirmando la recepción de tu correo: puede tardar hasta un minuto.');
       envT.textContent='¿No llegaste a enviar el correo?';
-      envP.textContent='Ábrelo otra vez con la solicitud lista para '+CORREO+', o copia la solicitud y envíala a esa dirección.';
+      envP.textContent='Ábrelo otra vez con la solicitud lista para '+CORREO+'. Si no se abre, copia la solicitud y envíala desde tu correo a esa dirección, con el asunto «Inscripción CAP».';
       ya.hidden=true;env.open=!!tarde;cuerpo.appendChild(env);
     }else{
       document.title='Un paso más: envía el correo · On | Law Academy';
       t.textContent='Un paso más: envía el correo';
       l.textContent=(via==='pestana'?'Abrimos tu correo en otra pestaña':'Abrimos tu aplicación de correo')+', con la solicitud lista para '+CORREO+'. Pulsa Enviar ahí y vuelve a esta página.';
       marca('','');
-      envT.textContent='¿No se abrió tu correo?';
-      envP.textContent='Ábrelo desde aquí con la solicitud lista para '+CORREO+', o copia la solicitud y envíala a esa dirección.';
+      envT.textContent=MOVIL?'¿No se abrió tu aplicación de correo?':'¿No se abrió tu correo?';
+      envP.textContent=MOVIL?'Copia la solicitud y envíala desde tu correo a '+CORREO+', con el asunto «Inscripción CAP». También puedes intentar abrir la aplicación otra vez.':'Ábrelo desde aquí con la solicitud lista para '+CORREO+'. Si no se abre, copia la solicitud y envíala a esa dirección, con el asunto «Inscripción CAP».';
       ya.hidden=false;env.open=true;cuerpo.insertBefore(env,caja);
     }
   }
