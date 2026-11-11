@@ -324,8 +324,8 @@ footer nav{display:flex;flex-wrap:wrap;gap:18px}
     <h2>Inscríbete <span class="m">en tres pasos</span></h2>
     <div class="steps">
       <div><b>01</b><p>Indica si eres afiliado del Colegio y completa el formulario: verás tu precio al instante.</p></div>
-      <div><b>02</b><p>Se abre tu correo con la solicitud lista para hola@onlawacademy.com. Pulsa Enviar y recibes la confirmación en tu correo.</p></div>
-      <div><b>03</b><p>Validamos tu afiliación, si aplica, y te enviamos el enlace de pago. Después, los enlaces de las Sesiones y los materiales.</p></div>
+      <div><b>02</b><p>Se abre tu correo con la solicitud lista para hola@onlawacademy.com. Pulsa Enviar y recibes la confirmación con las formas de pago.</p></div>
+      <div><b>03</b><p>Paga por transferencia o con Deuna y envíanos tu comprobante. Validamos tu afiliación, si aplica, y recibes los enlaces de las Sesiones y los materiales.</p></div>
     </div>
 
     <form id="f" novalidate>
@@ -371,13 +371,13 @@ footer nav{display:flex;flex-wrap:wrap;gap:18px}
     <div class="k">Preguntas frecuentes</div>
     <h2>Antes de inscribirte</h2>
     <div class="faq">
-      <details><summary>¿Quién puede acceder al precio de USD&nbsp;49&nbsp;+&nbsp;IVA?</summary><p>Los socios y afiliados activos del Colegio de Abogados de Pichincha. Validamos tu condición con el coordinador del Colegio antes de enviarte el enlace de pago. El público en general puede inscribirse en el mismo programa por USD&nbsp;89&nbsp;+&nbsp;IVA; si te afilias al Colegio, accedes al precio de agremiado.</p></details>
+      <details><summary>¿Quién puede acceder al precio de USD&nbsp;49&nbsp;+&nbsp;IVA?</summary><p>Los socios y afiliados activos del Colegio de Abogados de Pichincha. Validamos tu condición con el coordinador del Colegio. El público en general puede inscribirse en el mismo programa por USD&nbsp;89&nbsp;+&nbsp;IVA; si te afilias al Colegio, accedes al precio de agremiado.</p></details>
       <details><summary>¿La MasterClass es gratuita?</summary><p>Sí, para quienes se inscriben al programa completo: es la primera tarde (lunes 16 de noviembre) y está incluida en la inscripción, sin costo adicional. No se dicta por separado.</p></details>
       <details><summary>¿Qué necesito para participar?</summary><p>Un computador con Google Chrome y una cuenta de Google. Para Claude para Abogados también necesitas una cuenta de Claude; recomendamos el plan de pago para practicar todo lo que se ve en clase, y ese plan no está incluido en la inscripción.</p></details>
       <details><summary>¿Cómo me conecto a las clases?</summary><p>Las Sesiones son en vivo y en línea, de 18:00 a 20:00 (hora de Ecuador). Después de inscribirte recibes por correo el enlace de cada Sesión y el acceso al área de miembros con los materiales.</p></details>
-      <details><summary>¿Cómo sé que mi inscripción llegó?</summary><p>Al enviar el correo con tu solicitud recibes una confirmación automática desde hola@onlawacademy.com. Si no la ves en unos minutos, revisa la carpeta de spam o escríbenos a esa dirección.</p></details>
+      <details><summary>¿Cómo sé que mi inscripción llegó?</summary><p>Al enviar el correo con tu solicitud recibes una confirmación automática desde hola@onlawacademy.com, con tu valor a pagar y las formas de pago. Si no la ves en unos minutos, revisa la carpeta de spam o escríbenos a esa dirección.</p></details>
       <details><summary>¿Y si no puedo asistir a una Sesión?</summary><p>Cada Sesión queda grabada: las de Claude para Abogados y la de la MasterClass están disponibles durante 6 meses.</p></details>
-      <details><summary>¿Cómo pago?</summary><p>En línea, con tarjeta de crédito o débito, o con PayPal, a través del enlace que te enviamos tras validar tu afiliación.</p></details>
+      <details><summary>¿Cómo pago?</summary><p>Por transferencia bancaria a Produbanco o a Banco del Pacífico, o con Deuna. Al inscribirte recibes por correo el enlace a la página de pago, con tu valor final con IVA incluido. Después envías tu comprobante a hola@onlawacademy.com.</p></details>
       <details><summary>¿Recibo certificado?</summary><p>Sí. On | Law Academy emite los certificados con el aval y respaldo del Colegio de Abogados de Pichincha: de asistencia para la MasterClass y de aprobación para Claude para Abogados.</p></details>
     </div>
   </div>
@@ -408,7 +408,7 @@ footer nav{display:flex;flex-wrap:wrap;gap:18px}
   /*<compartido>*/
   /* Bloque compartido con gracias/index.html: generar_gracias.py lo copia tal cual. Se edita solo aquí. */
   var CORREO='hola@onlawacademy.com';
-  var COND={afiliado:{programa:'completo',nombre:'Afiliado del Colegio de Abogados de Pichincha',precio:'USD 49 + IVA'},'no-afiliado':{programa:'publico',nombre:'No Afiliado',precio:'USD 89 + IVA'}};
+  var COND={afiliado:{programa:'completo',nombre:'Afiliado del Colegio de Abogados de Pichincha',precio:'USD 49 + IVA',total:'USD 56.35',clave:'a'},'no-afiliado':{programa:'publico',nombre:'No Afiliado',precio:'USD 89 + IVA',total:'USD 102.35',clave:'n'}};
   var PROV={gmail:'Gmail',outlook:'Outlook · Hotmail',m365:'Outlook de trabajo (Microsoft 365)',yahoo:'Yahoo',app:'Otra aplicación de correo'};
   var MOVIL=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||(/Macintosh/.test(navigator.userAgent)&&navigator.maxTouchPoints>1);
   /* navegadores internos de las aplicaciones: ahí los enlaces de correo suelen no abrir nada */
@@ -439,8 +439,8 @@ footer nav{display:flex;flex-wrap:wrap;gap:18px}
   var resto=document.getElementById('resto'),hint=document.getElementById('hint'),fAfi=document.getElementById('f-afi'),fCel=document.getElementById('f-cel'),chkSocio=document.getElementById('chk-socio');
   var prov=document.getElementById('prov'),provT=document.getElementById('prov-t'),provB=document.getElementById('prov-b');
   var PRECIO={
-    afiliado:['Tu precio · afiliado del Colegio','USD 49','Programa completo: MasterClass gratuita (lunes 16) y Claude para Abogados (17, 18 y 19 de noviembre). Validamos tu afiliación con el Colegio antes de enviarte el enlace de pago.'],
-    'no-afiliado':['Tu precio · no afiliado','USD 89','Programa completo: MasterClass gratuita (lunes 16) y Claude para Abogados (17, 18 y 19 de noviembre). Si te afilias al Colegio de Abogados de Pichincha, accedes al precio de afiliado.']
+    afiliado:['Tu precio · afiliado del Colegio','USD 49','Programa completo: MasterClass gratuita (lunes 16) y Claude para Abogados (17, 18 y 19 de noviembre). Valor final con IVA: USD 56.35. El precio de afiliado se valida con el Colegio.'],
+    'no-afiliado':['Tu precio · no afiliado','USD 89','Programa completo: MasterClass gratuita (lunes 16) y Claude para Abogados (17, 18 y 19 de noviembre). Valor final con IVA: USD 102.35. Si te afilias al Colegio de Abogados de Pichincha, accedes al precio de afiliado.']
   };
   function cond(){var r=f.querySelector('input[name=condicion]:checked');return r?r.value:''}
   function limpiar(){err.textContent='';Array.prototype.forEach.call(f.querySelectorAll('[aria-invalid]'),function(i){i.removeAttribute('aria-invalid');i.removeAttribute('aria-describedby')})}
